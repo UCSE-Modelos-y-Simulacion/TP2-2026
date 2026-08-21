@@ -71,7 +71,36 @@ window.Simulaciones.simularRuinaApostador = function(
   //       - Si partida < 5 -> trayectoriasMuestra.push(historial).
   // 2. Calcular porcentajes y promedios.
   // ==========================================================================
-
+  for (let partida=0; partida<replicas; partida++){
+    saldo=capitalInicial;
+    rondas=0;
+    const historial = [saldo];
+    while(saldo>0 && saldo<meta){
+       rondas++;
+       u=Math.random();
+       if(u < probVictoria){
+        saldo += apuestaFija;
+       } else {
+         saldo -= apuestaFija;
+       }
+       if(partida < 5) {
+        historial.push(saldo);
+       }
+    }
+    if (saldo <= 0){
+      ruinasTotales++;
+    }
+    if(saldo >= meta){
+      exitosTotales++;
+    }
+    totalRondas += rondas;
+    if(rondas>maxRondas){
+      maxRondas = rondas; 
+    }
+    if(partida<5){
+      trayectoriasMuestra.push(historial)
+    }
+  }
 
   // --------------------------------------------------------------------------
   // RETORNO DE RESULTADOS

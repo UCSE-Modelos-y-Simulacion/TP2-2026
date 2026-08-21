@@ -50,7 +50,7 @@ window.Simulaciones.simularMontyHall = function(replicas = 1000, numPuertas = 3)
   //       y el participante elige la otra puerta cerrada).
   // 3. Calcular las probabilidades porcentuales: (victorias / replicas) * 100.
   // ==========================================================================
-
+  
 
   // --------------------------------------------------------------------------
   // RETORNO DE RESULTADOS
