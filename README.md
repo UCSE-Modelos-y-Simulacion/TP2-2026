@@ -18,13 +18,13 @@ TP2-Simulador-MonteCarlo/
 │   ├── visualizadores.js       <- Motor gráfico en Canvas HTML5
 │   ├── app.js                  <- Orquestador de interfaz y eventos
 │   └── ejercicios/             <- 🎯 ESPACIO DE TRABAJO DE LOS ALUMNOS
-│       ├── ejercicio01_monty_hall.js        (Alumno Asignado #1)
-│       ├── ejercicio02_dron_viento.js       (Alumno Asignado #2)
-│       ├── ejercicio03_ruina_apostador.js   (Alumno Asignado #3)
-│       ├── ejercicio04_blackjack.js         (Alumno Asignado #4)
-│       ├── ejercicio05_duelo_arqueros.js    (Alumno Asignado #5)
-│       ├── ejercicio06_vendedor_diarios.js  (Alumno Asignado #6)
-│       └── ejercicio07_estacion_carga.js    (Alumno Asignado #7)
+│       ├── ejercicio01_monty_hall.js        (Martín Sadir)
+│       ├── ejercicio02_dron_viento.js       (Alfredo Sumbaino)
+│       ├── ejercicio03_ruina_apostador.js   (Samara Zamar y Gino Grosso)
+│       ├── ejercicio04_blackjack.js         (Giuliano Gani)
+│       ├── ejercicio05_duelo_arqueros.js    (Zoe Pereyra)
+│       ├── ejercicio06_vendedor_diarios.js  (Valentín Flores)
+│       └── ejercicio07_estacion_carga.js    (Lucas Vilca)
 └── README.md                   <- Guía de colaboración y consignas
 ```
 
