@@ -62,8 +62,34 @@ window.Simulaciones.simularDueloArqueros = function(
   //    c. totalDisparos += disparosDuelo.
   // 2. Calcular probabilidades porcentuales y promedio de tiros.
   // ==========================================================================
+  for (let i=0; i<replicas; i++){
+      let turno = iniciaPrimero;
+      let finDuelo = false;
+      let disparosDuelo = 0;
+      let u;
 
-
+      while (finDuelo === false){
+        disparosDuelo++;
+        if (turno === 'A'){
+          u = Math.random();
+          if (u < probA){
+            victoriasA++;
+            finDuelo = true;
+          } else {
+            turno = 'B';
+          }
+        } else {
+          u = Math.random();
+          if (u < probB) {
+            victoriasB++;
+            finDuelo = true;
+          } else {
+            turno = 'A';
+          }
+        }
+      }
+      totalDisparos += disparosDuelo;
+    }
   // --------------------------------------------------------------------------
   // RETORNO DE RESULTADOS
   // (Asegúrate de completar las variables antes de retornar)

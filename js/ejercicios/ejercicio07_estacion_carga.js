@@ -77,7 +77,37 @@ window.Simulaciones.simularEstacionCarga = function(
   //    g. gananciaTotal += gananciaDia.
   // 2. Calcular promedios y probabilidad porcentual de penalización.
   // ==========================================================================
+for (let i = 0; i < replicas; i++) {
+    // a. Generar cantidad de autos
+    const cantAutos = Math.floor(Math.random() * (maxAutos - minAutos + 1)) + minAutos;
+    let consumoDia = 0;
 
+    // c. Calcular consumo de cada vehicu
+    for (let j = 0; j < cantAutos; j++) {
+      const probModalidad = Math.random();
+
+      if (probModalidad < 0.60) {
+        // Carga Estándar 60% prob
+        consumoDia += 20 + Math.random() * (40 - 20);
+      } else {
+        // Carga Completa 40% prob
+        consumoDia += 50 + Math.random() * (80 - 50);
+      }
+    }
+
+    // Registra y acumula el consumo del día
+    muestrasConsumo.push(consumoDia);
+    consumoTotalAcumulado += consumoDia;
+
+    let gananciaDia = consumoDia * tarifaKwh;
+
+    if (consumoDia > limitePotencia) {
+      diasConPenalizacion++;
+      gananciaDia -= penalizacion;
+    }
+
+    gananciaTotal += gananciaDia;
+  }
 
   // --------------------------------------------------------------------------
   // RETORNO DE RESULTADOS
