@@ -72,15 +72,26 @@ window.Simulaciones.simularVendedorDiarios = function(
   // 
   // Guía paso a paso:
   // 1. Simular las jornadas para la `politicaSeleccionada` (Q):
+  for (let i = 0; i < replicas; i++) {
   //    - Por cada día (0 a replicas - 1):
   //      a. Generar demanda = generarDemanda().
+    const demanda = generarDemanda();
   //      b. Calcular ventas = Math.min(demanda, politicaSeleccionada).
+    const ventas = Math.min(demanda, politicaSeleccionada);
   //      c. Calcular sobrante = Math.max(0, politicaSeleccionada - demanda).
+    const sobrante = Math.max(0, politicaSeleccionada - demanda);
   //      d. Calcular faltante = Math.max(0, demanda - politicaSeleccionada).
+    const faltante = Math.max(0, demanda - politicaSeleccionada);
   //      e. Calcular ingreso = (ventas * precioVenta) + (sobrante * valorRescate).
+    const ingreso = (ventas * precioVenta) + (sobrante * valorRescate);
   //      f. Calcular costo = politicaSeleccionada * costoUnitario.
+    const costo = politicaSeleccionada * costoUnitario;
   //      g. beneficioTotal += (ingreso - costo).
+    beneficioTotal += (ingreso - costo);
   //      h. Contabilizar días con sobrante y días con faltante.
+    if (sobrante > 0) diasConSobrante++;
+    if (faltante > 0) diasConFaltante++;
+  }
   //
   // 2. Evaluar la comparativa para todas las políticas estándar [50, 100, 150, 200]:
   //    - Para cada Q_test in [50, 100, 150, 200], simular `replicas` días y calcular
@@ -90,10 +101,29 @@ window.Simulaciones.simularVendedorDiarios = function(
   // Estructura para la tabla comparativa de políticas:
   const politicas = [50, 100, 150, 200];
   const comparativa = politicas.map(Q => {
+    let beneficioAcumuladoQ = 0;
+    let diasFaltanteQ = 0;
+
+    for (let i = 0; i < replicas; i++) {
+      const demanda = generarDemanda();
+      const ventas = Math.min(demanda, Q);
+      const sobrante = Math.max(0, Q - demanda);
+      const faltante = Math.max(0, demanda - Q);
+
+      const ingreso = (ventas * precioVenta) + (sobrante * valorRescate);
+      const costo = Q * costoUnitario;
+
+      beneficioAcumuladoQ += (ingreso - costo);
+
+      if (faltante > 0) {
+        diasFaltanteQ++;
+      }
+    }
+
     return {
       Q: Q,
-      beneficioMedio: 0, // Completar con el beneficio promedio obtenido para este Q
-      probFaltante: 0    // Completar con el % de días con faltante para este Q
+      beneficioMedio: replicas > 0 ? (beneficioAcumuladoQ / replicas) : 0, // Completar con el beneficio promedio obtenido para este Q
+      probFaltante: replicas > 0 ? (diasFaltanteQ / replicas) * 100 : 0    // Completar con el % de días con faltante para este Q
     };
   });
 
