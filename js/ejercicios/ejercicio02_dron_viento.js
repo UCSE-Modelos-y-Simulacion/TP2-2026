@@ -48,6 +48,7 @@ window.Simulaciones.simularDronViento = function(
   let sumaDistancias = 0;
   const puntosFinales = []; // Array de objetos { x: number, y: number } para graficar en Canvas
   const cuadrantes = { Q1: 0, Q2: 0, Q3: 0, Q4: 0, Ejes: 0 };
+  
 
   // ==========================================================================
   // TODO: PROGRAMAR AQUÍ LA LÓGICA DE SIMULACIÓN DE MONTE CARLO
@@ -58,20 +59,68 @@ window.Simulaciones.simularDronViento = function(
   //    - Sur:   [pNorte, pNorte + pSur)
   //    - Este:  [pNorte + pSur, pNorte + pSur + pEste)
   //    - Oeste: [pNorte + pSur + pEste, 1.0]
+
+    let probFuera=0; // Inicializar probabilidad de aterrizaje fuera del radio
+    let distMedia=0; // Inicializar distancia promedio final
+    
+    const limiteNorte = probViento.norte;
+    const limiteSur = limiteNorte + probViento.sur;
+    const limiteEste = limiteSur + probViento.este;
   // 2. Iterar por cada réplica de vuelo (0 a replicas - 1):
   //    a. Inicializar posición: x = 0, y = 0.
+    //let x = 0;
+    //let y = 0;
+  for (let i = 0; i < replicas; i++) {
+    let x = 0;
+    let y = 0;
+
   //    b. Ejecutar un bucle de 0 a bateriaPasos - 1:
   //       - Generar un número aleatorio u = Math.random().
+    for (let paso = 0; paso < bateriaPasos; paso++) {
+      const u = Math.random();
+
+
   //       - Actualizar (x, y) según el intervalo donde cayó u.
+      if (u < limiteNorte) {
+        // N
+        y += 1;
+      } else if (u < limiteSur) {
+        // S
+        y -= 1;
+      } else if (u < limiteEste) {
+        // E
+        x += 1;
+      } else {
+        // O
+        x -= 1;
+      }
+    }
+        puntosFinales.push({ x, y });
+
   //    c. Guardar la posición final: puntosFinales.push({ x, y }).
-  //    d. Calcular distancia = Math.sqrt(x * x + y * y) y acumularla en sumaDistancias.
+  const distancia = Math.sqrt(x * x + y * y);
+  sumaDistancias += distancia;
   //    e. Si distancia > radioCritico -> incrementar aterrizajesFueraRadio.
+  if (distancia > radioCritico) {
+    aterrizajesFueraRadio++;
+  }
   //    f. Clasificar en cuadrantes:
   //       - Q1: x > 0 && y > 0 (Noreste)
   //       - Q2: x < 0 && y > 0 (Noroeste)
   //       - Q3: x < 0 && y < 0 (Suroeste)
   //       - Q4: x > 0 && y < 0 (Sureste)
   //       - Ejes: x === 0 || y === 0
+  if (x > 0 && y > 0) {
+    cuadrantes.Q1++;
+  } else if (x < 0 && y > 0) {
+    cuadrantes.Q2++;
+  } else if (x < 0 && y < 0) {
+    cuadrantes.Q3++;
+  } else if (x > 0 && y < 0) {
+    cuadrantes.Q4++;
+  } else {
+    cuadrantes.Ejes++;
+  }
   // ==========================================================================
 
 
@@ -79,16 +128,31 @@ window.Simulaciones.simularDronViento = function(
   // RETORNO DE RESULTADOS
   // (Asegúrate de completar las variables antes de retornar)
   // --------------------------------------------------------------------------
-  const distMedia = replicas > 0 ? (sumaDistancias / replicas) : 0;
-  const probFuera = replicas > 0 ? (aterrizajesFueraRadio / replicas) * 100 : 0;
+
+  }
+  distMedia = replicas > 0 ? (sumaDistancias / replicas) : 0;
+  probFuera = replicas > 0 ? (aterrizajesFueraRadio / replicas) * 100 : 0;
+  men = () => {
+      const maxCuadrante = Math.max(cuadrantes.Q1, cuadrantes.Q2, cuadrantes.Q3, cuadrantes.Q4, cuadrantes.Ejes);
+      if (maxCuadrante === cuadrantes.Q1) return 'Q1';
+      if (maxCuadrante === cuadrantes.Q2) return 'Q2';
+      if (maxCuadrante === cuadrantes.Q3) return 'Q3';
+      if (maxCuadrante === cuadrantes.Q4) return 'Q4';
+      return 'Ejes';
+    };
+  CuadMasFrecuente = men();
+  console.log("Cuadrante más frecuente:", CuadMasFrecuente);
+    //    d. Calcular distancia = Math.sqrt(x * x + y * y) y acumularla en sumaDistancias.
+  
 
   return {
+    
     replicas: replicas,
     puntosFinales: puntosFinales,
     aterrizajesFueraRadio: aterrizajesFueraRadio,
     probabilidadFueraRadio: probFuera,
     distanciaPromedioFinal: distMedia,
     distribucionCuadrantes: cuadrantes,
-    cuadranteMasFrecuente: "Pendiente de simulación"
+    cuadranteMasFrecuente: CuadMasFrecuente
   };
 };

@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="kpi-card">
               <span class="kpi-label">Cuadrante Predominante</span>
-              <span class="kpi-value emerald">Q1 (N-E)</span>
+              <span class="kpi-value emerald">${res.cuadranteMasFrecuente || 'Ejes'}</span>
               <span class="kpi-subtext">${q.Q1} aterrizajes</span>
             </div>
           </div>
