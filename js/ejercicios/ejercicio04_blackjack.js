@@ -4,7 +4,7 @@
  * ============================================================================
  * EJERCICIO 04: BLACKJACK SIMPLIFICADO (Juego del 21)
  * 
- * ALUMNO ASIGNADO: ___________________________________________________________
+ * ALUMNO ASIGNADO: Giuliano Gani
  * 
  * ENUNCIADO:
  * En una mesa de Blackjack simplificada se enfrentan un Jugador y la Banca:
@@ -69,6 +69,36 @@ window.Simulaciones.simularBlackjack = function(
   //       - De lo contrario (sumaBanca >= sumaJugador) -> victoriasBanca++.
   // 2. Calcular probabilidades porcentuales.
   // ==========================================================================
+
+for (let i = 0; i < replicas; i++) {
+  
+    let sumaJugador = robarCarta() + robarCarta();
+    
+    while (sumaJugador < umbralJugador) {
+      sumaJugador += robarCarta();
+    }
+
+    if (sumaJugador > 21) {
+      jugadorSePasa++;
+      victoriasBanca++;
+      continue; 
+    }
+
+    let sumaBanca = robarCarta() + robarCarta();
+    
+    while (sumaBanca < umbralBanca) {
+      sumaBanca += robarCarta();
+    }
+
+    if (sumaBanca > 21) {
+      bancaSePasa++;
+      victoriasJugador++;
+    } else if (sumaJugador > sumaBanca) {
+      victoriasJugador++;
+    } else {
+      victoriasBanca++;
+    }
+  }
 
 
   // --------------------------------------------------------------------------
